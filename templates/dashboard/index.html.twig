@@ -1,0 +1,106 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/main.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="dashboard">
+        <div class="sidebar">
+            <div class="profile">
+                <img src="{{ asset('uploads/profile_images/' ~ app.user.profileImage) }}" alt="Profile Image">
+                <p>{{app.user.nom}}</p>
+                <p>{{app.user.prenom}}</p>
+                <p>{{app.user.username}} </p>
+               
+            </div>
+            <ul>
+                <li><a href="{{ path('app_dashboard') }}"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                <li><a href="{{ path('app_post_creation') }}"><i class="fas fa-edit"></i> Création de post</a></li>
+                <li><a href="{{ path('app_mail') }}"><i class="fas fa-envelope"></i> Envoi de mail</a></li>
+                <li><a href="{{ path('app_chiffres') }}"><i class="fas fa-chart-bar"></i> Chiffres</a></li>
+                <li><a href="{{ path('app_parametres') }}"><i class="fas fa-cogs"></i> Paramètres</a></li>
+                <li><a href="{{ path('app_utilisateurs') }}"><i class="fas fa-users"></i> Utilisateurs</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            <div class="header">
+                <div class="header-left">
+                    <h2>Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <button class="btn-upgrade">Upgrade to Pro</button>
+                </div>
+            </div>
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Nombre de post</h3>
+                        <p>1</p>
+                        <span>Increased by 60%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Weekly Orders</h3>
+                        <p>45,6334</p>
+                        <span>Decreased by 10%</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-info">
+                        <h3>Visitors Online</h3>
+                        <p>95,5741</p>
+                        <span>Increased by 5%</span>
+                    </div>
+                </div>
+            </div>
+            <div class="charts">
+                <div class="chart">
+                    <h4>Visit and Sales Statistics</h4>
+                    <!-- Chart will go here -->
+                </div>
+                <div class="chart">
+                    <h4>Traffic Sources</h4>
+                    <!-- Chart will go here -->
+                </div>
+            </div>
+            <div class="tickets">
+                <h4>Bitcoin Price History</h4>
+                <canvas id="bitcoinChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    {% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            var ctx = document.getElementById('bitcoinChart').getContext('2d');
+            var bitcoinChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: {{ bitcoinLabels|json_encode|raw }},
+                    datasets: [{
+                        label: 'Bitcoin Price',
+                        data: {{ bitcoinPrices|json_encode|raw }},
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: false
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+{% endblock %}
+{% endblock %}

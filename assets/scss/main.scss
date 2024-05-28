@@ -1,0 +1,24 @@
+@import './pages/home';
+@import './pages/login';
+@import './pages/register';
+@import './pages/dashboard';
+@import './pages/parametres';
+@import './pages/createPost';
+
+.flash-success {
+    color: green;
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.flash-error {
+    color: red;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}

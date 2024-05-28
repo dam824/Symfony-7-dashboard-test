@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Login{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/main.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="session">
+        <div class="left">
+            <!-- SVG content here -->
+        </div>
+        <form action="{{ path('app_login') }}" method="post" class="log-in" autocomplete="off">
+            <h4>Bienvenue sur <span>RCTOOL</span></h4>
+            <p>Enregistrez-vous pour accéder à votre dashboard</p>
+            {{ form_start(loginForm) }}
+            <div class="floating-label">
+                {{ form_row(loginForm.email, {
+                    'attr': {'placeholder': 'Email'}
+                }) }}
+                <div class="icon">
+                    <!-- SVG icon here -->
+                </div>
+            </div>
+            <div class="floating-label">
+                {{ form_row(loginForm.password, { 'label': 'Password', 'attr': {'placeholder': 'Password'} }) }}
+                <div class="icon">
+                    <!-- SVG icon here -->
+                </div>
+                <div class="register-link">
+                    <p>Vous n'avez pas de compte ? <a href="{{ path('app_register') }}">Enregistrez-vous ici</a></p>
+                </div>
+            </div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button class="btn">Login</button>
+            {{ form_end(loginForm) }}
+        </form>
+    </div>
+{% endblock %}

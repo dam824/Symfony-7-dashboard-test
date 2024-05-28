@@ -1,0 +1,19 @@
+{
+  "devDependencies": {
+    "@symfony/webpack-encore": "^4.6.1",
+    "nodemon": "^2.0.7",
+    "sass": "^1.77.2",
+    "sass-loader": "^13.3.3",
+    "webpack-notifier": "^1.13.0"
+  },
+  "scripts": {
+    "dev": "encore dev",
+    "build": "encore production",
+    "build-css": "sass assets/scss/pages/login.scss public/build/login.css && sass assets/scss/pages/register.scss public/build/register.css",
+    "watch-css": "nodemon -e scss -x \"npm run build-css\"",
+    "watch": "encore dev --watch"
+  },
+  "dependencies": {
+    "chart.js": "^4.4.3"
+  }
+}

@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/main.css') }}">
+{% endblock %}
+
+{% block body %}
+<div class="param-content">
+    <div class="form-container">
+        {{ form_start(settingsForm) }}
+            <div class="form-group">
+                {{ form_row(settingsForm.prenom) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(settingsForm.nom) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(settingsForm.email) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(settingsForm.profileImage) }}
+            </div>
+            {% if app.user.profileImage %}
+                <img src="{{ asset('uploads/profile_images/' ~ app.user.profileImage) }}" alt="Profile Image">
+            {% endif %}
+            <div class="form-actions">
+                <button type="submit" class="btn-submit">Mettre à jour</button>
+            </div>
+        {{ form_end(settingsForm) }}
+        <a href="{{ path('app_dashboard') }}" class="btn btn-secondary">Retour au Dashboard</a>
+    </div>
+</div>
+{% endblock %}
