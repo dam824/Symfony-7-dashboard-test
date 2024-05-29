@@ -1,7 +1,5 @@
 <?php 
 
-// src/Controller/PostCreationController.php
-
 namespace App\Controller;
 
 use App\Form\PostCreationFormType;
@@ -22,23 +20,23 @@ class PostCreationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Handle the image upload
-            $imageFiles = $form->get('images')->getData();
+            // Handle image uploads
             $uploadedMediaIds = [];
-
-            foreach ($imageFiles as $imageFile) {
-                $newFilename = uniqid().'.'.$imageFile->guessExtension();
-                try {
-                    $imageFile->move(
-                        $this->getParameter('images_directory'),
-                        $newFilename
-                    );
-
-                    // Upload image to WordPress and get media ID
-                    $mediaId = $wordpressService->uploadImage($this->getParameter('images_directory') . '/' . $newFilename);
-                    $uploadedMediaIds[] = $mediaId;
-                } catch (FileException $e) {
-                    $this->addFlash('error', 'Failed to upload image.');
+            foreach (['sliderImage', 'headlineImage', 'featuredImage'] as $imageField) {
+                $imageFile = $form->get($imageField)->getData();
+                if ($imageFile) {
+                    $newFilename = uniqid().'.'.$imageFile->guessExtension();
+                    try {
+                        $imageFile->move(
+                            $this->getParameter('images_directory'),
+                            $newFilename
+                        );
+                        // Upload image to WordPress and get media ID
+                        $mediaId = $wordpressService->uploadImage($this->getParameter('images_directory') . '/' . $newFilename);
+                        $uploadedMediaIds[$imageField] = $mediaId;
+                    } catch (FileException $e) {
+                        $this->addFlash('error', 'Failed to upload image.');
+                    }
                 }
             }
 
@@ -47,7 +45,18 @@ class PostCreationController extends AbstractController
                 'title' => $form->get('title')->getData(),
                 'slug' => $form->get('slug')->getData(),
                 'content' => $form->get('description')->getData(),
-                'featured_media' => count($uploadedMediaIds) > 0 ? $uploadedMediaIds[0] : null, // Assuming first image as featured image
+                'featured_media' => $uploadedMediaIds['featuredImage'] ?? null, // Featured image for the post
+                'meta' => [
+                    'slider_image' => $uploadedMediaIds['sliderImage'] ?? null,
+                    'headline_image' => $uploadedMediaIds['headlineImage'] ?? null,
+                ],
+                'categories' => $form->get('categories')->getData(),
+                'tags' => $form->get('tags')->getData(),
+                'excerpt' => $form->get('excerpt')->getData(),
+                'status' => 'publish',
+                'comment_status' => $form->get('commentsEnabled')->getData() ? 'open' : 'closed',
+                'visibility' => $form->get('visibility')->getData(),
+                'date' => $form->get('publishDate')->getData() ? $form->get('publishDate')->getData()->format('c') : null,
             ];
 
             $response = $wordpressService->createPost($data);

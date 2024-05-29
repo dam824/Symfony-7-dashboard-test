@@ -12,6 +12,41 @@
     <div class="post-content">
         <h1>Create Post</h1>
 
+        <div class="img-to-upload">
+
+            <div class="img-headline">
+                <div id="headlineImagePreview" class="image-preview"></div>
+                <p>Headline</p>
+                <div class="img-headline-form">
+                {{ form_widget(postForm.headlineImage, {'attr': {'id': 'post_creation_form_headlineImage'}}) }}
+                {{ form_errors(postForm.headlineImage) }}
+            </div>
+            </div>
+        
+
+            <div class="img-banner">
+                <div id="sliderImagePreview" class="image-preview"></div>
+                <p>Banner</p>
+                <div class="img-banner-form">
+                {{ form_widget(postForm.sliderImage, {'attr': {'id': 'post_creation_form_sliderImage'}}) }}
+                {{ form_errors(postForm.sliderImage) }}
+            </div>
+            </div>
+            
+
+            <div class="img-featured">
+                <div id="featuredImagePreview" class="image-preview"></div>
+                <p>Star</p>
+                <div class="img-featured-form">
+                {{ form_widget(postForm.featuredImage, {'attr': {'id': 'post_creation_form_featuredImage'}}) }}
+                {{ form_errors(postForm.featuredImage) }}
+            </div>
+            </div>
+       
+    </div>
+
+
+
         {{ form_start(postForm, {'attr': {'enctype': 'multipart/form-data'}}) }}
             <div class="form-group">
                 {{ form_label(postForm.slug, 'Slug * (This field use in url path.)') }}
@@ -32,13 +67,45 @@
                 {{ form_label(postForm.images, 'Images') }}
                 {{ form_widget(postForm.images, {'attr': {'multiple': 'multiple', 'id': 'imageUpload'}}) }}
                 {{ form_errors(postForm.images) }}
-                <div id="imagePreview" class="image-preview"></div>
+                <div id="generalImagePreview" class="general-image-preview"></div>
             </div>
             <div class="form-group">
                 {{ form_label(postForm.content, 'Content') }}
                 {{ form_widget(postForm.content, {'attr': {'id': 'contentField'}}) }}
                 {{ form_errors(postForm.content) }}
             </div>
+            <!-- ici -->
+            <div class="form-group">
+                {{ form_label(postForm.categories, 'Categories') }}
+                {{ form_widget(postForm.categories) }}
+                {{ form_errors(postForm.categories) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(postForm.tags, 'Tags') }}
+                {{ form_widget(postForm.tags) }}
+                {{ form_errors(postForm.tags) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(postForm.excerpt, 'Excerpt') }}
+                {{ form_widget(postForm.excerpt) }}
+                {{ form_errors(postForm.excerpt) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(postForm.commentsEnabled, 'Enable Comments') }}
+                {{ form_widget(postForm.commentsEnabled) }}
+                {{ form_errors(postForm.commentsEnabled) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(postForm.visibility, 'Visibility') }}
+                {{ form_widget(postForm.visibility) }}
+                {{ form_errors(postForm.visibility) }}
+            </div>
+            <div class="form-group">
+                {{ form_label(postForm.publishDate, 'Publish Date') }}
+                {{ form_widget(postForm.publishDate) }}
+                {{ form_errors(postForm.publishDate) }}
+            </div>
+            <!-- ici -->
             <div class="form-actions">
                 <button type="submit" class="btn btn-primary">Create</button>
                 <a href="{{ path('app_dashboard') }}" class="btn btn-secondary">Cancel</a>
@@ -59,37 +126,82 @@
         {% endfor %}
     </div>
 
-    <script>
-        document.getElementById('imageUpload').addEventListener('change', function(event) {
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageUpload = document.getElementById('post_creation_form_images');
+        const headlineImage = document.getElementById('post_creation_form_headlineImage');
+        const bannerImage = document.getElementById('post_creation_form_sliderImage');
+        const featuredImage = document.getElementById('post_creation_form_featuredImage');
+        
+        const previewGeneralContainer = document.getElementById('generalImagePreview');
+        const previewHeadlineImage = document.getElementById('headlineImagePreview');
+        const previewBannerImage = document.getElementById('sliderImagePreview');
+        const previewFeaturedImage = document.getElementById('featuredImagePreview');
+
+        function handleImageUpload(event, previewElement, size = {width: '100%', height: '100%'}) {
             const files = event.target.files;
-            const previewContainer = document.getElementById('imagePreview');
-            
+
             for (let i = 0; i < files.length; i++) {
                 const file = files[i];
-
                 const reader = new FileReader();
                 reader.onload = function(e) {
                     const img = document.createElement('img');
                     img.src = e.target.result;
                     img.classList.add('preview-image');
+                    img.style.width = size.width; // Fit the image within the preview container
+                    img.style.height = size.height; // Fit the image within the preview container
+                    img.style.marginTop = '0'; // Set margin-top to 0
                     img.draggable = true;
                     img.addEventListener('dragstart', function(ev) {
                         ev.dataTransfer.setData('text/html', img.outerHTML);
                     });
-                    previewContainer.appendChild(img);
+                    previewElement.appendChild(img);
                 };
                 reader.readAsDataURL(file);
             }
-        });
+            event.target.value = ''; // Reset the input field to allow re-upload
+        }
 
-        document.getElementById('contentField').addEventListener('drop', function(event) {
-            event.preventDefault();
-            const data = event.dataTransfer.getData('text/html');
-            this.value += data;
-        });
+        if (imageUpload && previewGeneralContainer) {
+            imageUpload.addEventListener('change', function(event) {
+                handleImageUpload(event, previewGeneralContainer, {width: '200px', height: '200px'});
+            });
+        }
 
-        document.getElementById('contentField').addEventListener('dragover', function(event) {
-            event.preventDefault();
-        });
-    </script>
+        if (headlineImage && previewHeadlineImage) {
+            headlineImage.addEventListener('change', function(event) {
+                handleImageUpload(event, previewHeadlineImage);
+            });
+        }
+
+        if (bannerImage && previewBannerImage) {
+            bannerImage.addEventListener('change', function(event) {
+                handleImageUpload(event, previewBannerImage);
+            });
+        }
+
+        if (featuredImage && previewFeaturedImage) {
+            featuredImage.addEventListener('change', function(event) {
+                handleImageUpload(event, previewFeaturedImage);
+            });
+        }
+
+        const contentField = document.getElementById('post_creation_form_content');
+        if (contentField) {
+            contentField.addEventListener('drop', function(event) {
+                event.preventDefault();
+                const data = event.dataTransfer.getData('text/html');
+                this.value += data;
+            });
+
+            contentField.addEventListener('dragover', function(event) {
+                event.preventDefault();
+            });
+        }
+    });
+</script>
+
+
+
 {% endblock %}
