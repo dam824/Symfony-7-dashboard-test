@@ -16,7 +16,7 @@
 
             <div class="img-headline">
                 <div id="headlineImagePreview" class="image-preview"></div>
-                <p>Headline</p>
+                <p>Headline image</p>
                 <div class="img-headline-form">
                 {{ form_widget(postForm.headlineImage, {'attr': {'id': 'post_creation_form_headlineImage'}}) }}
                 {{ form_errors(postForm.headlineImage) }}
@@ -26,7 +26,7 @@
 
             <div class="img-banner">
                 <div id="sliderImagePreview" class="image-preview"></div>
-                <p>Banner</p>
+                <p>Banner image</p>
                 <div class="img-banner-form">
                 {{ form_widget(postForm.sliderImage, {'attr': {'id': 'post_creation_form_sliderImage'}}) }}
                 {{ form_errors(postForm.sliderImage) }}
@@ -36,7 +36,7 @@
 
             <div class="img-featured">
                 <div id="featuredImagePreview" class="image-preview"></div>
-                <p>Star</p>
+                <p>Featured image</p>
                 <div class="img-featured-form">
                 {{ form_widget(postForm.featuredImage, {'attr': {'id': 'post_creation_form_featuredImage'}}) }}
                 {{ form_errors(postForm.featuredImage) }}
@@ -63,10 +63,10 @@
                 {{ form_widget(postForm.description) }}
                 {{ form_errors(postForm.description) }}
             </div>
-            <div class="form-group">
-                {{ form_label(postForm.images, 'Images') }}
-                {{ form_widget(postForm.images, {'attr': {'multiple': 'multiple', 'id': 'imageUpload'}}) }}
-                {{ form_errors(postForm.images) }}
+              <div class="form-group">
+                {{ form_label(postForm.image, 'Image') }}
+                {{ form_widget(postForm.image, {'attr': {'id': 'imageUpload'}}) }}
+                {{ form_errors(postForm.image) }}
                 <div id="generalImagePreview" class="general-image-preview"></div>
             </div>
             <div class="form-group">
@@ -74,27 +74,8 @@
                 {{ form_widget(postForm.content, {'attr': {'id': 'contentField'}}) }}
                 {{ form_errors(postForm.content) }}
             </div>
-            <!-- ici -->
-            <div class="form-group">
-                {{ form_label(postForm.categories, 'Categories') }}
-                {{ form_widget(postForm.categories) }}
-                {{ form_errors(postForm.categories) }}
-            </div>
-            <div class="form-group">
-                {{ form_label(postForm.tags, 'Tags') }}
-                {{ form_widget(postForm.tags) }}
-                {{ form_errors(postForm.tags) }}
-            </div>
-            <div class="form-group">
-                {{ form_label(postForm.excerpt, 'Excerpt') }}
-                {{ form_widget(postForm.excerpt) }}
-                {{ form_errors(postForm.excerpt) }}
-            </div>
-            <div class="form-group">
-                {{ form_label(postForm.commentsEnabled, 'Enable Comments') }}
-                {{ form_widget(postForm.commentsEnabled) }}
-                {{ form_errors(postForm.commentsEnabled) }}
-            </div>
+          
+          
             <div class="form-group">
                 {{ form_label(postForm.visibility, 'Visibility') }}
                 {{ form_widget(postForm.visibility) }}

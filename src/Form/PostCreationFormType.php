@@ -1,6 +1,4 @@
-<?php 
-
-// src/Form/PostCreationFormType.php
+<?php
 
 namespace App\Form;
 
@@ -11,13 +9,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class PostCreationFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options):void
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('slug', TextType::class, [
@@ -29,7 +26,7 @@ class PostCreationFormType extends AbstractType
             ->add('description', TextareaType::class, [
                 'label' => 'Description'
             ])
-            ->add('sliderImage', FileType::class,[
+            ->add('sliderImage', FileType::class, [
                 'label' => 'Slider Image',
                 'mapped' => false,
                 'required' => false,
@@ -41,9 +38,9 @@ class PostCreationFormType extends AbstractType
                             'image/png',
                             'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'Choissisez un format valide (JPG / JPEG / PNG)',
+                        'mimeTypesMessage' => 'Choose a valid format (JPG / JPEG / PNG)',
                     ])
-                    ],
+                ],
             ])
             ->add('headlineImage', FileType::class, [
                 'label' => 'Headline Image',
@@ -57,25 +54,23 @@ class PostCreationFormType extends AbstractType
                             'image/png',
                             'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'Choissisez un format valide (JPG / JPEG / PNG)',
+                        'mimeTypesMessage' => 'Choose a valid format (JPG / JPEG / PNG)',
                     ])
                 ]
             ])
-            
-            ->add('images', FileType::class, [
-                'label' => 'Images',
+            ->add('image', FileType::class, [
+                'label' => 'Image',
                 'mapped' => false,
                 'required' => false,
-                'multiple' => true,
                 'constraints' => [
                     new File([
                         'maxSize' => '5M',
                         'mimeTypes' => [
                             'image/jpeg',
                             'image/png',
-                            'image/jpg'
+                            'image/jpg',
                         ],
-                        'mimeTypesMessage' => 'Please upload a valid image (JPEG or PNG)',
+                        'mimeTypesMessage' => 'Choose a valid format (JPG / JPEG / PNG)',
                     ])
                 ],
             ])
@@ -96,22 +91,6 @@ class PostCreationFormType extends AbstractType
             ])
             ->add('content', TextareaType::class, [
                 'label' => 'Content',
-                'required' => false,
-            ])
-            ->add('categories', TextType::class, [
-                'label' => 'Categories',
-                'required' => false,
-            ])
-            ->add('tags', TextType::class, [
-                'label' => 'Tags',
-                'required' => false,
-            ])
-            ->add('excerpt', TextareaType::class, [
-                'label' => 'Excerpt',
-                'required' => false,
-            ])
-            ->add('commentsEnabled', CheckboxType::class, [
-                'label' => 'Enable Comments',
                 'required' => false,
             ])
             ->add('visibility', ChoiceType::class, [
